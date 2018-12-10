@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.carlos.blog.mapper.test.TestDao">
+    <sql id="BASE_TABLE">
+        test
+    </sql>
+    <sql id="BASE_COLUMN">
+        id,content
+    </sql>
+
+    <insert id="insert" parameterType="com.carlos.blog.entity.test.Test">
+        INSERT INTO
+          <include refid="BASE_TABLE"/>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            id,
+            <if test="content != null">
+                content
+            </if>
+        </trim>
+        <trim prefix="VALUES(" suffix=")" suffixOverrides=",">
+            #{id, jdbcType=INTEGER},
+            <if test="content != null">
+                #{content, jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </insert>
+
+    <select id="getAll" resultType="com.carlos.blog.entity.test.Test">
+        SELECT
+        <include refid="BASE_COLUMN"/>
+        FROM
+        <include refid="BASE_TABLE"/>
+    </select>
+</mapper>

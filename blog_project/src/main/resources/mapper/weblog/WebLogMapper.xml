@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.carlos.blog.mapper.weblog.WebLogMapper" >
+  <resultMap id="BaseResultMap" type="com.carlos.blog.entity.weblog.WebLog" >
+    <result column="logId" property="logId" jdbcType="INTEGER" />
+    <result column="className" property="className" jdbcType="VARCHAR" />
+    <result column="methodName" property="methodName" jdbcType="VARCHAR" />
+    <result column="params" property="params" jdbcType="VARCHAR" />
+    <result column="ip" property="ip" jdbcType="VARCHAR" />
+    <result column="result" property="result" jdbcType="INTEGER" />
+    <result column="message" property="message" jdbcType="VARCHAR"/>
+    <result column="visitTime" property="visitTime" jdbcType="TIMESTAMP" />
+    <result column="expendTime" property="expendTime" jdbcType="INTEGER"/>
+    <result column="visitor" property="visitor" jdbcType="VARCHAR" />
+    <result column="creatTime" property="creatTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <insert id="insert" parameterType="com.carlos.blog.entity.weblog.WebLog" >
+    insert into web_log (logId, className, methodName, 
+      params, ip, result, message,
+      visitTime, expendTime, visitor, creatTime
+      )
+    values (#{logId,jdbcType=INTEGER}, #{className,jdbcType=VARCHAR}, #{methodName,jdbcType=VARCHAR}, 
+      #{params,jdbcType=VARCHAR}, #{ip,jdbcType=VARCHAR}, #{result,jdbcType=INTEGER}, #{message,jdbcType=VARCHAR},
+      #{visitTime,jdbcType=TIMESTAMP}, #{expendTime,jdbcType=INTEGER}, #{visitor,jdbcType=VARCHAR}, #{creatTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.carlos.blog.entity.weblog.WebLog" >
+    insert into web_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="logId != null" >
+        logId,
+      </if>
+      <if test="className != null" >
+        className,
+      </if>
+      <if test="methodName != null" >
+        methodName,
+      </if>
+      <if test="params != null" >
+        params,
+      </if>
+      <if test="ip != null" >
+        ip,
+      </if>
+      <if test="result != null" >
+        result,
+      </if>
+      <if test="message != null" >
+        message,
+      </if>
+      <if test="visitTime != null" >
+        visitTime,
+      </if>
+      <if test="expendTime != null" >
+        expendTime,
+      </if>
+      <if test="visitor != null" >
+        visitor,
+      </if>
+      <if test="creatTime != null" >
+        creatTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="logId != null" >
+        #{logId,jdbcType=INTEGER},
+      </if>
+      <if test="className != null" >
+        #{className,jdbcType=VARCHAR},
+      </if>
+      <if test="methodName != null" >
+        #{methodName,jdbcType=VARCHAR},
+      </if>
+      <if test="params != null" >
+        #{params,jdbcType=VARCHAR},
+      </if>
+      <if test="ip != null" >
+        #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="result != null" >
+        #{result,jdbcType=INTEGER},
+      </if>
+      <if test="message != null" >
+        #{message,jdbcType=VARCHAR},
+      </if>
+      <if test="visitTime != null" >
+        #{visitTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="expendTime != null" >
+        #{expendTime,jdbcType=INTEGER},
+      </if>
+      <if test="visitor != null" >
+        #{visitor,jdbcType=VARCHAR},
+      </if>
+      <if test="creatTime != null" >
+        #{creatTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+</mapper>
