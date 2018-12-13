@@ -13,19 +13,9 @@ import java.security.NoSuchAlgorithmException;
  */
 public class PasswordUtil {
 
-    private static MessageDigest md5;
-
     private static final char[] randomChars	= { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
             'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
             'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
-
-    static {
-        try {
-            md5 = MessageDigest.getInstance("MD5");
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-    }
 
     /**
      * 获得随机16位盐值
@@ -53,7 +43,7 @@ public class PasswordUtil {
      * @return
      */
     public static String generate(String password, String salt){
-        String md5Password = encryptMD5(password + salt);
+        String md5Password = MD5Util.encryptMD5(password + salt);
         int charSize = 48;
         char[] cs = new char[charSize];
         for (int i = 0; i < charSize; i += 3) {
@@ -76,19 +66,7 @@ public class PasswordUtil {
         return md5.equals(md5Password);
     }
 
-    /**
-     * md5加密算法
-     * @param src
-     * @return
-     */
-    private static String encryptMD5(String src){
-        try{
-            byte[] bs = md5.digest(src.getBytes());
-            return new String(new Hex().encode(bs));
-        }catch (Exception e){
-            return null;
-        }
-    }
+
 
 
 
