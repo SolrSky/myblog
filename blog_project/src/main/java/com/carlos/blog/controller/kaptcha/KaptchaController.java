@@ -1,5 +1,6 @@
 package com.carlos.blog.controller.kaptcha;
 
+import com.carlos.blog.annotation.LoginToken;
 import com.carlos.blog.annotation.MyLog;
 import com.carlos.blog.constant.Constant;
 import com.google.code.kaptcha.Producer;
@@ -23,6 +24,7 @@ import java.awt.image.BufferedImage;
  * @date 2018/12/10
  */
 @Api(value = "获取验证码", tags = "1.0.0")
+@LoginToken
 @RestController
 public class KaptchaController {
 

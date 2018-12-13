@@ -13,4 +13,9 @@ public class BlogApplicationTests {
     public void contextLoads() {
     }
 
+    @Test
+    public void test(){
+        System.out.println(1111);
+    }
+
 }

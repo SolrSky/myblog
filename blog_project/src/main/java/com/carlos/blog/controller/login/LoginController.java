@@ -2,7 +2,6 @@ package com.carlos.blog.controller.login;
 
 import com.carlos.blog.annotation.MyLog;
 import com.carlos.blog.base.BaseResponse;
-import com.carlos.blog.controller.test.TestController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
