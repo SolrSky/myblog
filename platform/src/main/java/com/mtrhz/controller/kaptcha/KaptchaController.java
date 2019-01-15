@@ -1,15 +1,12 @@
-package com.carlos.blog.controller.kaptcha;
+package com.mtrhz.controller.kaptcha;
 
-import com.carlos.blog.annotation.LoginToken;
-import com.carlos.blog.constant.Constant;
 import com.google.code.kaptcha.Producer;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import com.mtrhz.constant.Constant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
@@ -20,19 +17,16 @@ import java.awt.image.BufferedImage;
 
 /**
  * @author Solrsky
- * @date 2018/12/10
+ * @date 2019/1/8
  */
-@Api(value = "获取验证码", tags = "1.0.0")
-@LoginToken
-@RestController
+@Controller
 public class KaptchaController {
 
     private static final Logger logger = LoggerFactory.getLogger(KaptchaController.class);
 
     @Autowired
-    private Producer captchaProducer;
+    private Producer kaptchatProducer;
 
-    @ApiOperation(value = "获取验证码")
     @RequestMapping(value = "/kaptcha")
     public void getKaptchaImage(HttpServletRequest request, HttpServletResponse response) throws Exception {
         response.setDateHeader("Expires", 0);
@@ -42,12 +36,12 @@ public class KaptchaController {
         response.setContentType("image/jpeg");
 
         // 生成验证码
-        String text = captchaProducer.createText();
+        String text = kaptchatProducer.createText();
         // 保存验证码
         HttpSession session = request.getSession();
         session.setAttribute(Constant.KAPTCHA_KEY, text);
         //向客户端写出
-        BufferedImage bi = captchaProducer.createImage(text);
+        BufferedImage bi = kaptchatProducer.createImage(text);
         ServletOutputStream out = response.getOutputStream();
         try {
             ImageIO.write(bi, "jpg", out);

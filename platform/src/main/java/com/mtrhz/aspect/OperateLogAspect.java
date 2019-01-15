@@ -1,9 +1,8 @@
-package com.carlos.blog.aspect;
+package com.mtrhz.aspect;
 
-import com.carlos.blog.annotation.MyLog;
-import com.carlos.blog.base.BaseResponse;
-import com.carlos.blog.entity.weblog.WebLog;
-import com.carlos.blog.service.weblog.WebLogService;
+import com.mtrhz.annotation.OperateLog;
+import com.mtrhz.base.BaseResponse;
+import com.mtrhz.temp.WebLog;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -11,7 +10,6 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -24,22 +22,20 @@ import java.util.Date;
 
 /**
  * @author Solrsky
- * @date 2018/12/5
+ * @date 2019/1/14
  */
 @Aspect
 @Component
-public class WebLogAspect {
+public class OperateLogAspect {
 
-    @Autowired
-    private WebLogService logService;
-
-    private static Logger LOGGER = LoggerFactory.getLogger(WebLogAspect.class);
+    private static Logger LOGGER = LoggerFactory.getLogger(OperateLogAspect.class);
 
     private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
     ThreadLocal<Long> startTime = new ThreadLocal<>();
 
-    @Pointcut("@annotation(com.carlos.blog.annotation.MyLog)")
+
+    @Pointcut("@annotation(com.mtrhz.annotation.OperateLog)")
     public void logPointCut(){}
 
 
@@ -51,16 +47,15 @@ public class WebLogAspect {
         HttpServletRequest request = attributes.getRequest();
 
         // 执行方法前调用
-        WebLog webLog = doBefore(joinPoint, request);
+        doBefore(joinPoint, request); //TODO: 返回确定的日志信息
         // 执行方法
         Object result = joinPoint.proceed();
         // 执行方法后调用
-        webLog = doAfter(joinPoint, webLog, result);
-        logService.save(webLog);
+//        webLog = doAfter(joinPoint, webLog, result); //TODO: 执行方法后进行分析并进行数据库操作
+//        logService.save(webLog);
 
         return result;
     }
-
 
     /**
      * 在进入真正方法前调用，记录访问的方法，参数信息
@@ -70,7 +65,6 @@ public class WebLogAspect {
     public WebLog doBefore(ProceedingJoinPoint joinPoint, HttpServletRequest request){
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
-        MyLog myLog = method.getAnnotation(MyLog.class);
 
         //请求的 类名、方法名
         String className = joinPoint.getTarget().getClass().getName();
@@ -101,13 +95,6 @@ public class WebLogAspect {
         long expendTime = System.currentTimeMillis() - startTime.get();
         webLog.setExpendTime(expendTime);
         if(result instanceof BaseResponse){
-            BaseResponse resp = (BaseResponse) result;
-            if(resp.isStatus()){
-                webLog.setResult(1);
-            }else{
-                webLog.setResult(0);
-                webLog.setMessage(resp.getMsg());
-            }
         }
         return webLog;
     }
